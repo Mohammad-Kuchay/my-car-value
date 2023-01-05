@@ -7,6 +7,15 @@ content-type: application/json
   "password": "12345678"
 }
 
+### Signin as existing user
+POST http://localhost:3000/auth/signin
+content-type: application/json
+
+{
+  "email": "asa1@gmail.com",
+  "password": "12345678"
+}
+
 ### Find a user
 GET http://localhost:3000/auth/9
 
@@ -24,3 +33,5 @@ Content-Type: application/json
   "email": "mnf@gmail.com"
 }
 
+###
+GET http://localhost:3000/auth/whoami
