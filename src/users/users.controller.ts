@@ -9,6 +9,7 @@ import {
   Delete,
   NotFoundException,
   Session,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -16,13 +17,23 @@ import { UsersService } from './users.service';
 import { UserDto } from './dtos/user.dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { AuthService } from './auth.service';
+import { CurrentUser } from './decorators/current-user.decorator';
+import { User } from './users.entity';
+import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
 @Serialize(UserDto)
 @Controller('auth')
+@UseInterceptors(CurrentUserInterceptor)
 export class UsersController {
   constructor(
     private usersService: UsersService,
     private authService: AuthService,
   ) {}
+
+  @Post('signout')
+  signout(@Session() session: any) {
+    session.userId = null;
+  }
+
   @Post('signup')
   async createUser(@Body() body: CreateUserDto, @Session() session: any) {
     const user = await this.authService.signup(body.email, body.password);
@@ -37,9 +48,18 @@ export class UsersController {
     return user;
   }
 
+  // @Get('whoami')
+  // async whoAmI(@Session() session: any) {
+  //   const user = await this.usersService.findOne(session.userId);
+  //   if (!user) {
+  //     throw new NotFoundException('user not found');
+  //   }
+  //   return user;
+  // }
+
   @Get('whoami')
-  whoAmI(@Session() session: any) {
-    return this.usersService.findOne(session.userId);
+  whoami(@CurrentUser() user: User) {
+    return user;
   }
 
   @Get('/:id')

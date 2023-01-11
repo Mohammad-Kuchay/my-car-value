@@ -35,3 +35,7 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000/auth/whoami
+
+### signOut
+
+POST http://localhost:3000/auth/signout
