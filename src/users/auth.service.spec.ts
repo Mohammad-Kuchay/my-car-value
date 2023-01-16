@@ -4,7 +4,7 @@ import { UsersService } from './users.service';
 import { User } from './users.entity';
 
 describe('AuthService', () => {
-  let service: AuthService;
+  let authService: AuthService;
 
   beforeEach(async () => {
     const fakeUsersService: Partial<UsersService> = {
@@ -22,10 +22,18 @@ describe('AuthService', () => {
       ],
     }).compile();
 
-    service = module.get<AuthService>(AuthService);
+    authService = module.get<AuthService>(AuthService);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(authService).toBeDefined();
+  });
+
+  it('Creates a new user with a salted and hashed password', async () => {
+    const user = await authService.signup('mnf@gmail.com', 'asdf');
+    expect(user.password).not.toEqual('asdf');
+    const [salt, hash] = user.password.split('.');
+    expect(salt).toBeDefined();
+    expect(hash).toBeDefined();
   });
 });
