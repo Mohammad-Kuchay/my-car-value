@@ -49,4 +49,12 @@ describe('AuthService', () => {
       return;
     }
   });
+
+  it('throws an error if signin is called with an unused user', async () => {
+    try {
+      await authService.signin('mnf@gmail.com', 'asdf');
+    } catch (error) {
+      return;
+    }
+  });
 });
