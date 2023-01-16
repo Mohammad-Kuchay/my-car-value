@@ -8,10 +8,21 @@ describe('AuthService', () => {
   let fakeUsersService: Partial<UsersService>;
 
   beforeEach(async () => {
+    const users: User[] = [];
     fakeUsersService = {
-      find: () => Promise.resolve([]),
-      create: (email: string, password: string) =>
-        Promise.resolve({ id: 1, email, password } as User),
+      find: (email) => {
+        const filteredUsers = users.filter((user) => user.email === email);
+        return Promise.resolve(filteredUsers);
+      },
+      create: (email: string, password: string) => {
+        const user = {
+          id: Math.floor(Math.random() * 999999),
+          email,
+          password,
+        } as User;
+        users.push(user);
+        return Promise.resolve(user);
+      },
     };
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -39,48 +50,34 @@ describe('AuthService', () => {
   });
 
   it("throws an error if user sign up with email that's already in use ", async () => {
-    fakeUsersService.find = () =>
-      Promise.resolve([
-        { id: 1, email: 'mnf@gmail.com', password: '12345' } as User,
-      ]);
+    await authService.signup('mnf@gmail.com', '12345');
     try {
       await authService.signup('mnf@gmail.com', 'asdf');
     } catch (error) {
-      return;
+      expect(error.message).toMatch('Email in use');
     }
   });
 
   it('throws an error if signin is called with an unused user', async () => {
     try {
-      await authService.signin('mnf@gmail.com', 'asdf');
+      await authService.signin('mnfbbbbb@gmail.com', 'asdf');
     } catch (error) {
-      return;
+      expect(error.message).toMatch('User not found');
     }
   });
 
   it('throws an error if an invalid password is provided', async () => {
-    fakeUsersService.find = () =>
-      Promise.resolve([
-        { id: 1, email: 'mnf@gmail.com', password: '12345' } as User,
-      ]);
+    await authService.signup('mnf@gmail.com', '12345');
+
     try {
       await authService.signin('mnf@gmail.com', 'asdf');
     } catch (error) {
-      return;
+      expect(error.message).toMatch('Password doesnot match');
     }
   });
 
   it('returns a user if correct password is provided', async () => {
-    fakeUsersService.find = () =>
-      Promise.resolve([
-        {
-          id: 1,
-          email: 'mnf@gmail.com',
-          password:
-            '46448330c3cd144c.d6e977771d55d6b46813fefc208b80c90f9bd4376c2d9e82bbc655fe368a2e68',
-        } as User,
-      ]);
-
+    await authService.signup('mnf@gmail.com', '12345678');
     const user = await authService.signin('mnf@gmail.com', '12345678');
     expect(user).toBeDefined();
   });
