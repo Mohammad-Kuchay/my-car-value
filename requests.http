@@ -4,7 +4,7 @@ content-type: application/json
 
 {
   "email": "asa1@gmail.com",
-  "password": "12345678"
+  "password": "12345678",
 }
 
 ### Signin as existing user
@@ -17,10 +17,10 @@ content-type: application/json
 }
 
 ### Find a user
-GET http://localhost:3000/auth/9
+GET http://localhost:3000/auth/7
 
 ### Find all users with email
-GET http://localhost:3000/auth/?email=mnf@gmail.com
+GET http://localhost:3000/auth/?email=asa1@gmail.com
 
 ### Remove a User
 DELETE http://localhost:3000/auth/2
