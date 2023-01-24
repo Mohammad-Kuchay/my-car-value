@@ -24,6 +24,8 @@ const CookieSession = require('cookie-session');
           database: config.get('DB_NAME'),
           entities: [User, Report],
           synchronize: true,
+          cache: true,
+          logging: true,
         };
       },
     }),

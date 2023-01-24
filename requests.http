@@ -39,3 +39,18 @@ GET http://localhost:3000/auth/whoami
 ### signOut
 
 POST http://localhost:3000/auth/signout
+
+### reports create
+
+POST http://localhost:3000/reports
+content-type: application/json
+
+{
+  "make": "Box Chevy 6",
+  "model": "Carola",
+  "year": 1980,
+  "mileage": 10000,
+  "lng": 0,
+  "lat": 0,
+  "price": 500000
+}
