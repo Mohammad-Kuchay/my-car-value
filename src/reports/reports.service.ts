@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/users/users.entity';
 import { Repository } from 'typeorm';
 import { createReportDto } from './dtos';
 import { Report } from './reports.entity';
@@ -8,8 +9,13 @@ import { Report } from './reports.entity';
 export class ReportsService {
   constructor(@InjectRepository(Report) private repo: Repository<Report>) {}
 
-  async create(reportDto: createReportDto) {
+  async create(reportDto: createReportDto, user: User) {
     const report = this.repo.create(reportDto);
+    report.user = user;
+    console.log(
+      '🚀 ~ file: reports.service.ts:14 ~ ReportsService ~ create ~ report',
+      report,
+    );
     return this.repo.save(report);
   }
 }
