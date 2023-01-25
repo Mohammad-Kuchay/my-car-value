@@ -46,17 +46,17 @@ POST http://localhost:3000/reports
 content-type: application/json
 
 {
-  "make": "Box Chevy 6",
-  "model": "Carola",
-  "year": 1980,
-  "mileage": 10000,
-  "lng": 0,
-  "lat": 0,
-  "price": 500000
+  "make": "Ford",
+  "model": "Mustang",
+  "year": 1982,
+  "mileage": 50000,
+  "lng": 45,
+  "lat": 45,
+  "price": 200000
 }
 
 ### Approve
-PATCH http://localhost:3000/reports/1
+PATCH http://localhost:3000/reports/12
 content-type: application/json
 
 {
@@ -64,5 +64,5 @@ content-type: application/json
 }
 
 ### Get an estimate
-GET http://localhost:3000/reports?make=toyota&model=corolla&lng=0&lat=0&mileage=20000&year=2000
+GET http://localhost:3000/reports?make=Ford&model=Mustang&lng=45&lat=45&mileage=20000&year=1981
 content-type: application/json
