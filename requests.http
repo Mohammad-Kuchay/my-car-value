@@ -3,7 +3,7 @@ POST http://localhost:3000/auth/signup
 content-type: application/json
 
 {
-  "email": "asa1@gmail.com",
+  "email": "asa11@gmail.com",
   "password": "12345678"
 }
 
@@ -56,9 +56,13 @@ content-type: application/json
 }
 
 ### Approve
-PATCH http://localhost:3000/reports/90
+PATCH http://localhost:3000/reports/1
 content-type: application/json
 
 {
   "approved": true
 }
+
+### Get an estimate
+GET http://localhost:3000/reports?make=toyota&model=corolla&lng=0&lat=0&mileage=20000&year=2000
+content-type: application/json
